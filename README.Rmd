@@ -1,0 +1,23 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+```{r settings,echo=FALSE, include=FALSE}
+className <- 'LearningR'
+```
+
+# ODSC Workshop
+
+This is an empty repo for my training sessions at ODSC East 2018. Throughout the workshop I will upload completed code to this repository.
+
+To get started, follow the instructions at [https://github.com/jaredlander/LearningR](https://github.com/jaredlander/LearningR).
