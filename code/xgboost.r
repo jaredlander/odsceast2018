@@ -1,6 +1,6 @@
 packages <- c('useful', 'coefplot', 
               'xgboost', 'here',
-              'magrittr')
+              'magrittr', 'dygraphs')
 purrr::walk(packages, library, character.only=TRUE)
 
 manTrain <- readRDS(
@@ -54,3 +54,92 @@ xg1 <- xgb.train(
     eval_metric='logloss',
     nrounds=1
 )
+
+xg2 <- xgb.train(
+    data=xgTrain,
+    objective='binary:logistic',
+    booster='gbtree',
+    eval_metric='logloss',
+    nrounds=1,
+    watchlist=list(train=xgTrain)
+)
+xg2$evaluation_log
+
+xg3 <- xgb.train(
+    data=xgTrain,
+    objective='binary:logistic',
+    booster='gbtree',
+    eval_metric='logloss',
+    nrounds=300,
+    print_every_n=1,
+    watchlist=list(train=xgTrain)
+)
+
+xg4 <- xgb.train(
+    data=xgTrain,
+    objective='binary:logistic',
+    booster='gbtree',
+    eval_metric='logloss',
+    nrounds=300,
+    print_every_n=1,
+    watchlist=list(train=xgTrain, validate=xgVal)
+)
+
+dygraph(xg4$evaluation_log)
+
+
+xg5 <- xgb.train(
+    data=xgTrain,
+    objective='binary:logistic',
+    booster='gbtree',
+    eval_metric='logloss',
+    nrounds=1000,
+    print_every_n=10,
+    watchlist=list(train=xgTrain, validate=xgVal)
+)
+
+dygraph(xg5$evaluation_log)
+
+xg6 <- xgb.train(
+    data=xgTrain,
+    objective='binary:logistic',
+    booster='gbtree',
+    eval_metric='logloss',
+    nrounds=1000,
+    print_every_n=10,
+    watchlist=list(train=xgTrain, validate=xgVal),
+    early_stopping_rounds=70
+)
+
+dygraph(xg6$evaluation_log)
+
+
+xg7 <- xgb.train(
+    data=xgTrain,
+    objective='binary:logistic',
+    booster='gbtree',
+    eval_metric='logloss',
+    nrounds=2000,
+    print_every_n=10,
+    watchlist=list(train=xgTrain, validate=xgVal),
+    early_stopping_rounds=70,
+    xgb_model=xg3
+)
+
+xg6$evaluation_log
+
+xgb.plot.multi.trees(xg6, 
+                     feature_names=colnames(manX_Train)
+)
+
+xgb.plot.importance(
+    xgb.importance(
+        xg6, feature_names=colnames(manX_Train)
+    )
+)
+
+
+xgb.importance(
+    xg6, feature_names=colnames(manX_Train)
+) %>% View
+
