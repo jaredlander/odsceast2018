@@ -1,0 +1,125 @@
+---
+title: Shiny in Markdown
+author: The Yankees
+date: May 2, 2018
+output: html_document
+runtime: shiny
+---
+
+# Select Input
+
+```{r select-input}
+selectInput(
+    inputId='StateSelection',
+    label='Please choose a state',
+    choices=list('NY', 'NJ', 'MA', 'RI', 'TX'),
+    selected='MA'
+)
+```
+
+```{r print-state}
+renderText(input$StateSelection)
+```
+
+# Other Inputs
+
+```{r other-inputs}
+sliderInput(
+    inputId='SliderSample',
+    label='This is a slider',
+    min=0, max=10, value=5
+)
+
+checkboxInput(
+    inputId='CheckSample',
+    label='Check This'
+)
+
+radioButtons(
+    inputId='RadioSample',
+    label='Choose one',
+    choices=list('AB', 'A', 'B', 'O')
+)
+
+dateInput(
+    inputId='DateChoice',
+    label='Select a date'
+)
+
+dateRangeInput(
+    inputId='DateRangeChoice',
+    label='Choose your dates'
+)
+```
+
+# Text Input
+
+```{r text-inputs}
+textInput(
+    inputId='TextSample',
+    label='Write something',
+    placeholder='Write on the ghost'
+)
+
+textAreaInput(
+    inputId='TextAreaSample',
+    label='Write a long passage'
+)
+
+passwordInput(
+    inputId='PasswordSample',
+    label='Enter the secret'
+)
+
+renderText(input$PasswordSample)
+```
+
+# Show Data
+
+```{r render-tables}
+renderTable(mtcars)
+
+renderDataTable(mtcars)
+
+DT::renderDataTable(mtcars)
+```
+
+# Plots
+
+```{r render-plot}
+renderPlot(hist(mtcars$mpg))
+```
+
+```{r render-choices}
+selectInput(
+    inputId='PlotColumn',
+    label='Choose a column',
+    choices=names(mtcars)
+)
+
+sliderInput(
+    inputId='Bins',
+    label='Choose number of bins',
+    min=5, max=50, value=30
+)
+```
+
+```{r gg-hist}
+library(ggplot2)
+renderPlot(
+    ggplot(mtcars, aes_string(x=input$PlotColumn)) + 
+        geom_histogram(bins=input$Bins)
+)
+```
+
+```{r render-plotly}
+plotly::renderPlotly(
+    plotly::ggplotly(
+        ggplot(mtcars, 
+               aes_string(x=input$PlotColumn)
+        ) + 
+            geom_histogram(bins=input$Bins)
+    )
+)
+```
+
