@@ -2,6 +2,7 @@ library(shiny)
 library(ggplot2)
 library(ggthemes)
 library(magrittr)
+library(leaflet)
 
 pizza <- jsonlite::fromJSON('FavoriteSpots.json') %>% tidyr::unnest()
 
@@ -19,5 +20,23 @@ shinyServer(function(input, output,
         DT::datatable(
             pizza, rownames=FALSE
         )
+    })
+    
+    output$PizzaMap <- renderLeaflet({
+        leaflet() %>% 
+            addTiles() %>% 
+            addMarkers(
+                lng= ~ longitude, lat= ~ latitude,
+                popup= ~ Name,
+                data=pizza %>% 
+                    dplyr::slice(
+                        as.integer(
+                            # input$PizzaTable_rows_selected
+                            # input$PizzaTable_rows_all
+                            c(input$PizzaTable_rows_all,
+                                      input$PizzaTable_rows_selected)
+                        )
+                    )
+            )
     })
 })

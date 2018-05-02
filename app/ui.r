@@ -44,7 +44,8 @@ pizzaPanel <- tabPanel(
             DT::dataTableOutput(outputId='PizzaTable')
         ),
         column(
-            width=6
+            width=6,
+            leaflet::leafletOutput(outputId='PizzaMap')
         )
     )
 )
