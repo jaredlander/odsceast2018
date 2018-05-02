@@ -36,9 +36,22 @@ plotPanel <- tabPanel(
     )
 )
 
+pizzaPanel <- tabPanel(
+    title='Pizza',
+    fluidRow(
+        column(
+            width=6,
+            DT::dataTableOutput(outputId='PizzaTable')
+        ),
+        column(
+            width=6
+        )
+    )
+)
+
 navbarPage(
     title='Flight of the Navigator',
-    selected='Simple Plot',
+    selected='Pizza',
     theme=shinytheme(theme='spacelab'),
     # themeSelector(),
     tabPanel(
@@ -50,5 +63,6 @@ navbarPage(
         'Hello, there'
     ),
     statePanel,
-    plotPanel
+    plotPanel,
+    pizzaPanel
 )
