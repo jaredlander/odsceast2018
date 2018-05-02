@@ -18,9 +18,27 @@ statePanel <- tabPanel(
     )
 )
 
+plotPanel <- tabPanel(
+    title='Simple Plot',
+    fluidRow(
+        column(
+            width=3,
+            selectInput(
+                inputId='CarColumn',
+                label='Please choose a column to plot',
+                choices=names(mtcars)
+            )
+        ),
+        column(
+            width=9,
+            plotOutput(outputId='CarHist')
+        )
+    )
+)
+
 navbarPage(
     title='Flight of the Navigator',
-    selected='State Info',
+    selected='Simple Plot',
     theme=shinytheme(theme='spacelab'),
     # themeSelector(),
     tabPanel(
@@ -31,5 +49,6 @@ navbarPage(
         title='Second Page',
         'Hello, there'
     ),
-    statePanel
+    statePanel,
+    plotPanel
 )
